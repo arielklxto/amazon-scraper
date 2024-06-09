@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Scraper</title>
+    <style>
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: #04274d;
+            text-shadow: 10px 5px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+        }
+        .form-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transition: 0.5s;
+        }
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Espaçamento entre os cartões */
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 10px;
+            width: 200px; /* Largura fixa para os cartões */
+            overflow: hidden;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: row; /* Garantir que o conteúdo fique verticalmente alinhado */
+            align-items: center;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .product-details {
+            padding: 15px;
+            text-align: center;
+        }
+        .product-details h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .product-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Amazon Product Scraper</h1>
+    <div class="form-group">
+        <input type="text" id="keyword" placeholder="Enter product">
+        <button onclick="scrapeProducts()">Search</button>
+    </div>
+    <div id="results"></div>
+    <script>
+        async function scrapeProducts() {
+            const keyword = document.getElementById('keyword').value;
+            // Check if the keyword is empty
+            // Verifica se a palavra-chave está vazia
+            if (!keyword) {
+                alert('Please enter a keyword');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/scrape?keyword=${encodeURIComponent(keyword)}`);
+                // Check if the API response is okay
+                //Verifica se a resposta da API está correta
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const products = await response.json();
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+
+                // Display the products on the page
+                // Exibe os produtos na página
+                products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product';
+
+                    const productDetailsDiv = document.createElement('div');
+                    productDetailsDiv.className = 'product-details';
+
+                    const productImage = document.createElement('img');
+                    productImage.src = product.image;
+
+                    const productInfo = document.createElement('div');
+                    productInfo.innerHTML = `<h2>${product.title}</h2>
+                                             <p>Rating: ${product.rating} stars</p>
+                                             <p>Reviews: ${product.reviews}</p>`;
+
+                    productDetailsDiv.appendChild(productImage);
+                    productDetailsDiv.appendChild(productInfo);
+
+                    productDiv.appendChild(productDetailsDiv);
+                    resultsDiv.appendChild(productDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching the products:', error);
+                alert('Failed to fetch products. Please try again later.');
+            }
+        }
+    </script>
+</body>
+</html>

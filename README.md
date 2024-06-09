@@ -85,7 +85,7 @@ This is a simple project for scraping Amazon product listings based on a keyword
 
 1. Clone this repository:
     ```bash
-    git clone <REPOSITORY_URL>
+    git clone github.com/arielklxto/amazon-scraper.git
     cd amazon-scraper
     ```
 

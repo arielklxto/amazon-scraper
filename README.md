@@ -1,3 +1,5 @@
+![amazon scraper](https://github.com/arielklxto/amazon-scraper/blob/main/img/imagem.jpg)
+
 ## VERSÃO EM PORTUGUÊS
 
 # Amazon Product Scraper
@@ -14,7 +16,7 @@ Este é um simples projeto de raspagem de produtos da Amazon, que permite buscar
 
 1. Clone este repositório:
     ```bash
-    git clone <URL_DO_REPOSITORIO>
+    git clone github.com/arielklxto/amazon-scraper.git
     cd amazon-scraper
     ```
 
